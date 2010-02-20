@@ -5,7 +5,7 @@ CwFeedback
 
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
 
-![Screenshot](http://www.chipwreck.de/blog/software/)
+![Screenshot](http://www.chipwreck.de/blog/wp-content/themes/chipwreck/images/too_cool.png)
 
 ### Demo
 
