@@ -3,7 +3,7 @@ CwFeedback
 
 An event based mootools plugin for interface feedback via Ajax.
 
-![Screenshot](http://www.chipwreck.de/blog/wp-content/themes/chipwreck/images/too_cool.png)
+![Screenshot](http://www.chipwreck.de/blog/wp-content/uploads/2010/02/cwfeedback-scrshot.png)
 
 ### Demo
 
