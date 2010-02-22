@@ -1,7 +1,7 @@
 name: CwFeedback
 author: mario_fischer
-category: ?
-tags: [?]
+category: Request
+tags: [ajax, voting, rating, events, social]
 demo: http://www.chipwreck.de/blog/software/cwfeedback/demo/
 docs: http://www.chipwreck.de/blog/software/cwfeedback/help/
 
