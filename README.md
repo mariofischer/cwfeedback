@@ -1,18 +1,16 @@
 CwFeedback
 ===========
 
-(not yet ready..)
-
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
+An event based mootools plugin for interface feedback via Ajax.
 
 ![Screenshot](http://www.chipwreck.de/blog/wp-content/themes/chipwreck/images/too_cool.png)
 
 ### Demo
 
-[http://www.chipwreck.de/blog/software/.../](?)
+[www.chipwreck.de/blog/software/cwfeedback/demo/](http://www.chipwreck.de/blog/software/cwfeedback/demo/)
 
 ### Docs
-[http://www.chipwreck.de/blog/software/.../](?)
+[www.chipwreck.de/blog/software/cwfeedback/help/](http://www.chipwreck.de/blog/software/cwfeedback/help/)
 
 How to use
 ----------
@@ -21,9 +19,7 @@ How to use
 
 * [MooTools Core](http://mootools.net/core)
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
-	
 ### More Information
 
-See [http://www.chipwreck.de/blog/software/](http://www.chipwreck.de/blog/software/) for more information.
+See [http://www.chipwreck.de/blog/software/cwfeedback/](http://www.chipwreck.de/blog/software/cwfeedback/) for more information.
 	

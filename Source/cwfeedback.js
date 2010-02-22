@@ -24,24 +24,26 @@ CwFeedback = new Class({
 	Implements: [Options,Events],
 
 	options: {
-		url: 'ajax.php', // ajax url - set to false to use no ajax
+		url: 'ajax.php', // ajax url - set to false if you don't use ajax
 		ajaxMethod: 'get', // use get or post for the request?
 		ajaxParam: 'vote', // name of parameter for the request (..url.php?vote=..)
 		
-		multipleVotes: true, // is it allowed to vote multiple times?
-		possibleValues: {min: 1, max: 5}, // possible values
+		possibleValues: [1, 2, 3], // possible values
+		initialValue: false, // optional, to select an element initially		
+		multipleVotes: true, // is it allowed to change the selection?
 		
-		onSelectInitially: function(el, value) { this.fireEvent('select', el); }, // element is selected at the beginning, overwrite if necessary
+		onSelectInitially: function(el, value) { this.fireEvent('select', [el, value]); }, // element is already selected at the beginning, overwrite if necessary
 
-		onRequestStarted: $empty, // element was selected
-		onSelect: $empty, // element was selected
-		onUnselect: $empty, // previously selected element is now unselected
-		onVotingDone: $empty, // has voted, no more votes possible
+		// onRequestStarted: function(), // ajax request has started
+		// onFail: function(errortext), // failure while request
 		
-		onFail: $empty, // failure while request
+		// onSelect: function(el, value, response), // element was selected
+		// onUnselect: function(el, value), // previously selected element is now unselected
+		// onFeedbackDone: function(el, value, others), // user has voted and no more votes possible
+		
 	},
 
-	initialize: function(element, value, options)
+	initialize: function(element, options)
 	{
 		if (!$(element)) { return; }
 		
@@ -50,9 +52,9 @@ CwFeedback = new Class({
 		this.setOptions(options);
 		
 		// value present? select it
-		if (value && this.valueIsReasonable(value)) {
-			this.value = value;
-			this.fireEvent('selectInitially', [$(this.element+'_'+value), value]);
+		if (this.options.initialValue && this.valueIsReasonable(this.options.initialValue)) {
+			this.value = this.options.initialValue;
+			this.fireEvent('selectInitially', [$(this.element+'_'+this.value), this.value]);
 		}
 		
 		// build request
@@ -92,6 +94,11 @@ CwFeedback = new Class({
 		}
 	},
 	
+	getValue: function()
+	{
+		return this.value;
+	},
+	
 	unselectValue: function(oldvalue)
 	{
 		this.fireEvent('unselect', [$(this.element+'_'+oldvalue), oldvalue]);
@@ -99,13 +106,13 @@ CwFeedback = new Class({
 	
 	disableVoting: function()
 	{
-		this.fireEvent('votingDone', [$(this.element+'_'+this.value), this.value, $$('#'+this.element+' .[id!='+this.element+'_'+this.value+']')]);
+		this.fireEvent('feedbackDone', [$(this.element+'_'+this.value), this.value, $$('#'+this.element+'>.[id!='+this.element+'_'+this.value+']')]);
 	},
 	
 	valueIsReasonable: function(value)
 	{
 		if (!value) return false;
-		return true;
+		return (this.options.possibleValues.indexOf(value) != -1);
 	},
 	
 	doVote: function(newvalue, params)
@@ -119,13 +126,16 @@ CwFeedback = new Class({
 			return;
 		}		
 		
-		// propagate to ajax
+		// start request
 		if (this.request) {
 			this.newvalue = newvalue;
-			
-			this.request.send(this.options.ajaxParam+"="+newvalue);
+			requestparams = this.options.ajaxParam+"="+newvalue;
 			if (params) {
+				requestparams = requestparams+"&"+params;
 			}
+			
+			this.request.send(requestparams);
+			
 		}
 		else {
 			if (this.value && this.value != newvalue) {
@@ -134,49 +144,5 @@ CwFeedback = new Class({
 			this.selectValue(newvalue);	
 		}
 	},
-		/*
-				var fxr = new Fx.Tween($('uservoting'), {duration: 500, property: 'opacity'});
-				var fxs = new Fx.Tween($('uservotingdone'), {duration: 500, property: 'opacity'});
-
-				fxr.start(0).chain(function() {
-					 $('uservoting').dispose();
-					 this.callChain();
-				}).chain(function() {
-					fxs.start(1);
-					this.callChain();
-				}).chain(function() {
-					(function() {
-						$('uservotingnum').highlight('#999');
-						var users = $('uservotingnum').get('text').toInt();
-						users++;
-						if (users == 1) {
-							$('uservotingnum').set('text', users + " user thinks");
-						} else {
-							$('uservotingnum').set('text', users + " users think");
-						}
-					}).delay(500);
-				});
-
-				var item = $('ifriend');
-				if (!item) return;
-				var fxr = new Fx.Tween(item, {duration: 500, property: 'opacity'});
-	
-				fxr.start(0).chain(function() {
-					if (responseText == "1") {
-						item.removeClass('inofriend');
-						item.addClass('ifriend');
-						item.set('text', 'You are a fan (Click to change)');
-					}
-					else {
-						item.removeClass('ifriend');
-						item.addClass('inofriend');
-						item.set('text', 'Become a fan');
-					}
-					this.callChain();
-				}).chain(function() {
-					fxr.start(1);
-					this.callChain();
-				}).delay(500);
-		*/
 
 });

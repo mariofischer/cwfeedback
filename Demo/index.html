@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="author" content="Mario Fischer" />
+	<link rel="stylesheet" type="text/css" href="cw-demo.css" media="all" />
+	<script type="text/javascript" src="mootools-1.2.4-core-yc.js"></script>
+	<script type="text/javascript" src="mootools-1.2.4.4-more-fx-yc.js"></script>
+	<script type="text/javascript" src="../Source/cwfeedback.js"></script>
+	<title>Chipwreck | Javascript CwFeedback Example Page</title>
+</head>
+
+<body>
+<script type="text/javascript">
+var rating, likeit, discoevent, starrating;
+window.addEvent("domready", function() {
+
+	rating = new CwFeedback('myrating', {
+		url: false, // no ajax is being used, to view the demo offline
+		multipleVotes: false,
+	
+		onSelect: function(el, value, response) {
+ 			$('myresponse').set('html', 'Okay.'); // here you'd use response via ajax
+ 			(function() { $('myresponse').fade('out'); }).delay(2500);
+		},		
+		onFeedbackDone: function(el, value, others) {
+			others.fade('out');
+			el.morph('.off');
+			(function() { others.dispose(); }).delay(1000);
+		}		
+	});
+
+	starrating = new CwFeedback('starrating', {
+		possibleValues: [1,2,3,4,5],
+		initialValue: 2,
+		url: false,
+	
+		onSelectInitially: function(el, value) {
+			for (var i = 1; i <= value; i++) {
+				$('starrating_'+i).set('class', 'on');
+			};
+		},	
+		onSelect: function(el, value, response) {
+			$('starrating').highlight('#ddd');
+		},		
+	});
+
+
+	likeit = new CwFeedback('mylikeit', {
+		initialValue: 1,
+		url: false,
+		
+		onSelectInitially: function(el, value) {
+			el.hide();
+		},
+		onSelect: function(el, value, response) {
+ 			el.dissolve();
+		},
+		onUnselect: function(el, value) {
+			el.reveal();
+		}		
+	});
+	
+	discoevent = new CwFeedback('myevent', {
+		initialValue: 2,
+		url: false,
+
+		onRequestStarted: function() {
+			$('myeventparticipants').set('html', '...');
+		},		
+		onSelect: function(el, value, response) {
+			el.set('checked', 'checked');
+			$('myeventparticipants').set('html', (Math.random()*20).toInt()); // here you'd use response via ajax
+		},		
+		onUnselect: function(el, value) {
+			el.erase('checked');
+		}
+	});
+	
+	// hover stars
+	$$('#starrating a').addEvents({
+		'mouseenter': function(el) {
+			curr = this.get('id').substr(this.get('id').lastIndexOf('_') + 1);
+			for (i = 1; i <= 5; i++) {
+				$('starrating_'+i).set('class', (i <= curr) ? 'onhover' : 'off');
+			}
+		},
+		'mouseleave': function(el){
+			for (i = 1; i <= 5; i++) {
+				$('starrating_'+i).set('class', (i <= starrating.getValue()) ? 'on' : 'off');
+			}
+		}
+	});
+});
+
+</script>
+
+<div class="content-box">
+
+	<h1>CwFeedback Demo</h1>
+	<p>
+		An event based mootools plugin for interface feedback via Ajax.
+	</p>
+	<p> 
+		For more information: <a href="http://www.chipwreck.de/blog/software/cwfeedback/">Homepage/Documentation/Feedback &raquo;</a>
+	</p>
+
+	<h3>Some examples, view source and website for more information:</h3>
+	
+	<div class="examples">
+	
+		<div class="anexample">
+			<h5>Voting - only vote once, hide other entries after selection, text feedback:</h5>
+			
+			<div class="anaction">
+				<div id="myrating">
+					<a id="myrating_1" onclick="rating.doVote(1, 'uid=xy&entry=abc')"><img src="img/rateup.png" alt="Rate down" width="24" height="24" /> Vote up</a>
+					<a id="myrating_2" onclick="rating.doVote(2, 'uid=xy&entry=abc')"><img src="img/ratedn.png" alt="Rate Up" width="24" height="24" /> Vote down</a>
+					<a id="myrating_3" onclick="rating.doVote(3, 'uid=xy&entry=abc')"><img src="img/block.png" alt="Block" width="24" height="24" /> Block</a>
+				</div>
+				<p id="myresponse">Vote for something or block it.</p>
+			</div>
+			<br />
+		</div>
+	
+		<div class="anexample">
+			<h5>Rating - change rating multiple times, initial value set, access value:</h5>
+			
+			<div class="anaction">
+				<div id="starrating">
+					Your rating:
+					<a id="starrating_1" onclick="starrating.doVote(1)">&#x2605;</a><a id="starrating_2" onclick="starrating.doVote(2)">&#x2605;</a><a id="starrating_3" onclick="starrating.doVote(3)">&#x2605;</a><a id="starrating_4" onclick="starrating.doVote(4)">&#x2605;</a><a id="starrating_5" onclick="starrating.doVote(5)">&#x2605;</a>
+				</div>
+			</div>
+			<br />
+		</div>
+		
+		<div class="anexample">
+			<h5><q>Like this</q> - toggle two elements, initial value set:</h5>
+			
+			<p id="mylikeit" class="anaction">
+				<span id="mylikeit_1">12 others like this. <a onclick="likeit.doVote(1)">Like it</a></span>
+				<span id="mylikeit_2">You and 12 others like this. <a onclick="likeit.doVote(2)">Unlike</a></span>
+			</p>
+			<br />
+		</div>
+	
+		<div class="anexample">
+			<h5>Event invitation - change text before and after request:</h5>
+			
+			<p id="myevent" class="anaction">
+				<input type="radio" name="myevent[]" id="myevent_1" onclick="discoevent.doVote(1)" /><label for="myevent_1">Yes, sure!</label>
+				<input type="radio" name="myevent[]" id="myevent_2" onclick="discoevent.doVote(2)" /><label for="myevent_2">Maybe</label>
+				<input type="radio" name="myevent[]" id="myevent_3" onclick="discoevent.doVote(3)" /><label for="myevent_3">No way</label>
+				<strong id="myeventparticipants">12</strong> people attending.
+			</p>			
+			<br />
+		</div>
+		
+	</div>
+	
+	<p><small>Written by Mario Fischer 2010, <a href="http://www.chipwreck.de/blog/">chipwreck.de &raquo;</a></small></p>
+</div>
+
+	
+</body>
+</html>
