@@ -12,7 +12,7 @@ requires:
   core/1.2.3: '*'
 
 provides:
-  - CwCVoting
+  - CwFeedback
   
 version:
   0.5
