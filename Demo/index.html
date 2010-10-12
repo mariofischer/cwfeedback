@@ -5,8 +5,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="author" content="Mario Fischer" />
 	<link rel="stylesheet" type="text/css" href="cw-demo.css" media="all" />
-	<script type="text/javascript" src="mootools-1.2.4-core-yc.js"></script>
-	<script type="text/javascript" src="mootools-1.2.4.4-more-fx-yc.js"></script>
+	<script type="text/javascript" src="mootools-core-1.3-full-nocompat-yc.js"></script>
+	<script type="text/javascript" src="mootools-more-1.3-yc.js"></script>
 	<script type="text/javascript" src="../Source/cwfeedback.js"></script>
 	<title>Chipwreck | Javascript CwFeedback Example Page</title>
 </head>
@@ -26,7 +26,7 @@ window.addEvent("domready", function() {
 		},		
 		onFeedbackDone: function(el, value, others) {
 			others.fade('out');
-			el.morph('.off');
+			el.set('class', 'onhover');
 			(function() { others.dispose(); }).delay(1000);
 		}		
 	});

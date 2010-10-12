@@ -15,7 +15,7 @@ provides:
   - CwFeedback
   
 version:
-  0.8
+  0.81
 ...
 */
 
@@ -105,7 +105,7 @@ CwFeedback = new Class({
 	
 	disableVoting: function()
 	{
-		this.fireEvent('feedbackDone', [$(this.element+'_'+this.value), this.value, $$('#'+this.element+'>.[id!='+this.element+'_'+this.value+']')]);
+		this.fireEvent('feedbackDone', [$(this.element+'_'+this.value), this.value, $$('#'+this.element+'>[id!='+this.element+'_'+this.value+']')]); // now 1.3 compatible
 	},
 	
 	valueIsReasonable: function(value)
