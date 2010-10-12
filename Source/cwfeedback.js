@@ -15,7 +15,7 @@ provides:
   - CwFeedback
   
 version:
-  0.5
+  0.8
 ...
 */
 
@@ -40,7 +40,6 @@ CwFeedback = new Class({
 		// onSelect: function(el, value, response), // element was selected
 		// onUnselect: function(el, value), // previously selected element is now unselected
 		// onFeedbackDone: function(el, value, others), // user has voted and no more votes possible
-		
 	},
 
 	initialize: function(element, options)
